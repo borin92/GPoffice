@@ -7,26 +7,23 @@ const socket = io();
 //   speed: 5
 // };
 
-class Me {
-  player;
-}
-
-var me = new Me();
-
 let players = [];
 const keyboard = {};
 
 const ctx = canvas.getContext("2d");
 var background = new Image();
 background.src = "map1.png";
+ctx.font = "25px Arial";
 
 function drawPlayers() {
   ctx.drawImage(background, 0, 0); // 1.
-  players.forEach(function ({ x, y, size, c }) {
+  players.forEach(function ({ x, y, size, c, playerName }) {
     ctx.beginPath();
     ctx.rect(x, y, size, size);
     ctx.fillStyle = c;
     ctx.fill();
+    ctx.fillStyle = "black";
+    ctx.fillText(playerName, x - 25, y - 5);
   });
 }
 
@@ -59,7 +56,13 @@ window.onkeyup = function (e) {
 };
 
 // first call
-requestAnimationFrame(update);
+function startGame(username) {
+  document.getElementById("canvas").classList.remove("hidden");
+  document.getElementById("input").classList.add("hidden");
+  requestAnimationFrame(update);
+  socket.emit("username", username);
+}
+
 socket.on("players list", function (list) {
   players = list;
 });

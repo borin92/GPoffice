@@ -15,6 +15,7 @@ module.exports = function (server) {
   io.on("connection", function (socket) {
     // register new player
     players[socket.id] = {
+      playerName: "",
       x: 490,
       y: 0,
       size: 20,
@@ -23,6 +24,10 @@ module.exports = function (server) {
       socketId: socket.id,
       c: "#" + (((1 << 24) * Math.random()) | 0).toString(16),
     };
+    //add username
+    socket.on("username", function (username) {
+      players[socket.id].playerName = username;
+    });
     // delete disconnected player
     socket.on("disconnect", function () {
       delete players[socket.id];

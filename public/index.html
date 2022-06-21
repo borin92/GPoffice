@@ -5,23 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Node Game</title>
     <style>
-        canvas { margin: auto; display: block; border: 1px solid grey; };
+        .canvas { margin: auto; display: block; border: 1px solid grey; };
     </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
     <!-- Game -->
     <canvas id="canvas"
             width="640"
-            height="640">
+            height="640"
+            class="hidden canvas">
     </canvas>
+    <div id="input">
+        <label>Username</label>
+        <input id="username" type="text" >
+        <button onclick=handleSubmit()>Enter</button>
+    </div>
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/game.js"></script>
     <script>
-
+        function handleSubmit(){
+           var inputvalue =  document.getElementById("username").value
+           startGame(inputvalue)
+        }
     </script>
+
 </body>
 
 </html>
