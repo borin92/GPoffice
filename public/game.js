@@ -17,9 +17,11 @@ ctx.font = "25px Arial";
 
 function drawPlayers() {
   ctx.drawImage(background, 0, 0); // 1.
-  players.forEach(function ({ x, y, size, c, playerName }) {
+  players.forEach(function ({ x, y, size, c, playerName, sprite }) {
     ctx.beginPath();
-    ctx.rect(x, y, size, size);
+    var playerSprite = new Image();
+    playerSprite.src = sprite;
+    ctx.drawImage(playerSprite, x, y);
     ctx.fillStyle = c;
     ctx.fill();
     ctx.fillStyle = "black";
