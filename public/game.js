@@ -12,7 +12,7 @@ const keyboard = {};
 
 const ctx = canvas.getContext("2d");
 var background = new Image();
-background.src = "map1.png";
+background.src = "map.png";
 ctx.font = "25px Arial";
 
 function drawPlayers() {
@@ -30,10 +30,8 @@ function drawPlayers() {
 }
 
 function update() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawPlayers(); // 2.
-  requestAnimationFrame(update); // 3.
 }
 
 function movePlayer() {
@@ -44,7 +42,7 @@ function movePlayer() {
 }
 
 function update() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
   movePlayer(); // *
   drawPlayers();
   requestAnimationFrame(update);
@@ -68,3 +66,13 @@ function startGame(username) {
 socket.on("players list", function (list) {
   players = list;
 });
+
+var map = [[], []];
+var test = [];
+
+/* function mapArr(arr, increment) {
+  for (let index = 467; index < increment; index++) {
+    const element = array[index][209];
+  }
+}
+ */

@@ -1,4 +1,5 @@
 const socketio = require("socket.io");
+const map = require("./map.js")();
 
 module.exports = function (server) {
   // io server
@@ -10,14 +11,14 @@ module.exports = function (server) {
     io.volatile.emit("players list", Object.values(players));
   }
 
-  setInterval(update, 1000 / 60);
+  setInterval(update, 950 / 60);
 
   io.on("connection", function (socket) {
     // register new player
     players[socket.id] = {
       playerName: "",
-      x: 490,
-      y: 0,
+      x: 808,
+      y: 201,
       size: 20,
       speed: 1,
       floor: 0,
@@ -36,8 +37,9 @@ module.exports = function (server) {
     socket.on("disconnect", function () {
       delete players[socket.id];
     });
+
     socket.on("move left", function () {
-      if (!players[socket.id].x <= 0) {
+      if (checkPixel(players[socket.id].x - 1, players[socket.id].y) !== 1) {
         players[socket.id].x -= players[socket.id].speed;
 
         if (!players[socket.id].sprite.startsWith("spriteLeft")) {
@@ -58,8 +60,9 @@ module.exports = function (server) {
         }
       }
     });
+
     socket.on("move up", function () {
-      if (!players[socket.id].y <= 0) {
+      if (checkPixel(players[socket.id].x, players[socket.id].y - 1) !== 1) {
         players[socket.id].y -= players[socket.id].speed;
 
         if (!players[socket.id].sprite.startsWith("spriteTop")) {
@@ -80,8 +83,9 @@ module.exports = function (server) {
         }
       }
     });
+
     socket.on("move right", function () {
-      if (players[socket.id].x <= 620) {
+      if (checkPixel(players[socket.id].x + 1, players[socket.id].y) !== 1) {
         players[socket.id].x += players[socket.id].speed;
         if (!players[socket.id].sprite.startsWith("spriteRight")) {
           players[socket.id].sprite = "spriteRight3.png";
@@ -103,8 +107,9 @@ module.exports = function (server) {
     });
 
     socket.on("move down", function () {
-      if (players[socket.id].y <= 620) {
+      if (checkPixel(players[socket.id].x, players[socket.id].y + 1) !== 1) {
         players[socket.id].y += players[socket.id].speed;
+
         if (!players[socket.id].sprite.startsWith("spriteDown")) {
           players[socket.id].sprite = "spriteDown3.png";
         }
@@ -125,3 +130,9 @@ module.exports = function (server) {
     });
   });
 };
+
+function checkPixel(x, y) {
+  var pixelValue = map[x][y];
+  console.log(x, y);
+  return pixelValue;
+}
