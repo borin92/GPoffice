@@ -38,6 +38,8 @@ module.exports = function (server) {
       delete players[socket.id];
     });
 
+    qsdfjbqwkmsxdfbjnmkj, bnfmlskdj, fbmkjsdbf;
+
     socket.on("move left", function () {
       if (checkPixel(players[socket.id].x - 1, players[socket.id].y) !== 1) {
         players[socket.id].x -= players[socket.id].speed;
@@ -45,7 +47,8 @@ module.exports = function (server) {
         if (!players[socket.id].sprite.startsWith("spriteLeft")) {
           players[socket.id].sprite = "spriteLeft4.png";
         }
-        if (players[socket.id].x == players[socket.id].lastX - 25) {
+
+        if (players[socket.id].x == players[socket.id].lastX - 10) {
           players[socket.id].lastX = players[socket.id].x;
           switch (players[socket.id].sprite) {
             case "spriteLeft1.png":
