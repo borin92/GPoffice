@@ -1,5 +1,7 @@
 const socketio = require("socket.io");
 const map = require("./map.js")();
+const fs = require("fs");
+const stringToWrite = "HELLO I AM WRITTEN TO THE FILE";
 
 module.exports = function (server) {
   // io server
@@ -7,6 +9,19 @@ module.exports = function (server) {
 
   // game state (players list)
   const players = {};
+  var test = [];
+  for (let x = 0; x < map.length; x++) {
+    var maps = map[x];
+    for (let y = 0; y < maps.length; y++) {
+      if (map[x][y] === 1) {
+        /*             ctx.beginPath();
+        ctx.fillRect(x, y, 1, 1);
+        ctx.fillStyle = c;
+        ctx.fill(); */
+        test.push([x, y]);
+      }
+    }
+  }
   function update() {
     io.volatile.emit("players list", Object.values(players));
   }
@@ -17,21 +32,26 @@ module.exports = function (server) {
     // register new player
     players[socket.id] = {
       playerName: "",
-      x: 808,
-      y: 201,
+      x: 850,
+      y: 442,
       size: 20,
       speed: 1,
       floor: 0,
       socketId: socket.id,
       sprite: "",
-      lastX: 490,
-      lastY: 0,
+      lastX: 321,
+      lastY: 193,
       c: "#" + (((1 << 24) * Math.random()) | 0).toString(16),
     };
+
     //add username
     socket.on("username", function (username) {
       players[socket.id].playerName = username;
       players[socket.id].sprite = "spriteDown1.png";
+      io.volatile.emit("wall", test);
+    });
+    socket.on("first", function (username) {
+      io.volatile.emit("wall", test);
     });
     // delete disconnected player
     socket.on("disconnect", function () {
@@ -134,5 +154,15 @@ module.exports = function (server) {
 function checkPixel(x, y) {
   var pixelValue = map[x][y];
   console.log(x, y);
+  writePosInTxt(x, y);
   return pixelValue;
+}
+
+function writePosInTxt(x, y) {
+  fs.appendFile("./pos.txt", `${x},${y} \r\n`, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
 }

@@ -9,6 +9,12 @@ const socket = io();
 
 let players = [];
 const keyboard = {};
+let walle = [];
+var buffer = 0;
+if ((buffer = 0)) {
+  buffer = 2;
+  socket.emit("first");
+}
 
 const ctx = canvas.getContext("2d");
 var background = new Image();
@@ -17,11 +23,21 @@ ctx.font = "25px Arial";
 
 function drawPlayers() {
   ctx.drawImage(background, 0, 0); // 1.
+  console.log(walle);
+  walle.forEach((element) => {
+    ctx.beginPath();
+    ctx.fillRect(element[0], element[1], 3, 3);
+    ctx.fillStyle = "blue";
+    ctx.fill();
+  });
   players.forEach(function ({ x, y, size, c, playerName, sprite }) {
     ctx.beginPath();
-    var playerSprite = new Image();
+    ctx.fillRect(x, y, 1, 1);
+    ctx.fillStyle = c;
+    ctx.fill();
+    /*     var playerSprite = new Image();
     playerSprite.src = sprite;
-    ctx.drawImage(playerSprite, x, y);
+    ctx.drawImage(playerSprite, x, y); */
     ctx.fillStyle = c;
     ctx.fill();
     ctx.fillStyle = "black";
@@ -65,6 +81,10 @@ function startGame(username) {
 
 socket.on("players list", function (list) {
   players = list;
+});
+socket.on("wall", function (wall) {
+  walle = wall;
+  console.log(walle);
 });
 
 var map = [[], []];
